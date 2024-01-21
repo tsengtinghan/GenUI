@@ -49,12 +49,13 @@ const executeAction = (action) => {
       break;
 
     case 'display_element':
-      const ids = action.content.ids.flatMap(id => id.split(',').map(item => item.trim()));
       const newVisibility = {};
-      ids.forEach(id => {
+      console.log(action.content.ids)
+      action.content.ids.forEach(id => {
         newVisibility[id] = true;
       });
       setVisibleElements(prev => ({ ...prev, ...newVisibility }));
+      console.log("visibleElements", visibleElements)
       break;
       
     case 'play_audio':
@@ -105,25 +106,25 @@ const executeAction = (action) => {
         {slideContent && slideContent.template_id === 'three_elements' && visibleElements && (
           <ThreeCard
             cardTitle={visibleElements.title ? slideContent.title : ''}
-            cardOneTitle={visibleElements.elements && slideContent.elements[0].title}
-            cardOneText={visibleElements.elements && slideContent.elements[0].details}
-            cardTwoTitle={visibleElements.elements && slideContent.elements[1].title}
-            cardTwoText={visibleElements.elements && slideContent.elements[1].details}
-            cardThreeTitle={visibleElements.elements && slideContent.elements[2].title}
-            cardThreeText={visibleElements.elements && slideContent.elements[2].details}
+            cardOneTitle={visibleElements.element_1 && slideContent.elements[0].title}
+            cardOneText={visibleElements.element_1 && slideContent.elements[0].details}
+            cardTwoTitle={visibleElements.element_2 && slideContent.elements[1].title}
+            cardTwoText={visibleElements.elements_2&& slideContent.elements[1].details}
+            cardThreeTitle={visibleElements.element_3 && slideContent.elements[2].title}
+            cardThreeText={visibleElements.elements_3 && slideContent.elements[2].details}
           />
         )}
         {slideContent && slideContent.template_id === 'timeline' && visibleElements && (<Timeline
           title={visibleElements.title ? slideContent.title : ''}
-          subtitle1={visibleElements.elements && slideContent.elements[0].title}
-          des1={visibleElements.elements && slideContent.elements[0].details}
-          time1={visibleElements.elements && slideContent.elements[0].time}
-          subtitle2={visibleElements.elements && slideContent.elements[1].title}
-          des2={visibleElements.elements && slideContent.elements[1].details}
-          time2={visibleElements.elements && slideContent.elements[1].time}
-          subtitle3={visibleElements.elements && slideContent.elements[2].title}
-          des3={visibleElements.elements && slideContent.elements[2].details}
-          time3={visibleElements.elements && slideContent.elements[2].time}
+          subtitle1={visibleElements.element_1 && slideContent.elements[0].title}
+          des1={visibleElements.element_1 && slideContent.elements[0].details}
+          time1={visibleElements.element_1 && slideContent.elements[0].time}
+          subtitle2={visibleElements.elements_2 && slideContent.elements[1].title}
+          des2={visibleElements.elements_2 && slideContent.elements[1].details}
+          time2={visibleElements.elements_2 && slideContent.elements[1].time}
+          subtitle3={visibleElements.element_3 && slideContent.elements[2].title}
+          des3={visibleElements.element_3 && slideContent.elements[2].details}
+          time3={visibleElements.element_3 && slideContent.elements[2].time}
         />
         )}
       </div>

@@ -12,7 +12,8 @@
        "type": "display_element",
        "content": {
            "ids": [
-               "title, sub_title"
+               "title",
+               "sub_title"
            ]
        }
    },

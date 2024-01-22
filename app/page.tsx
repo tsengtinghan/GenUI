@@ -38,6 +38,7 @@ const SlideShowComponent = () => {
 
   const [showSlide, setShowSlide] = useState(false);
   const [visibleElements, setVisibleElements] = useState({});
+  const [slideNum, setSlideNum] = useState(0);
   
 
 const executeAction = (action) => {
@@ -45,7 +46,7 @@ const executeAction = (action) => {
   switch(action.type) {
     case 'show_slide':
       setSlideContent(action.content);
-      setVisibleElements({})
+      setSlideNum(1);
       break;
 
     case 'display_element':
@@ -54,6 +55,12 @@ const executeAction = (action) => {
       action.content.ids.forEach(id => {
         newVisibility[id] = true;
       });
+      if(slideNum === 1){
+        setVisibleElements(newVisibility);
+        console.log("new", newVisibility)
+        console.log("visibleElements", visibleElements)
+        setSlideNum(2)
+      }
       setVisibleElements(prev => ({ ...prev, ...newVisibility }));
       console.log("visibleElements", visibleElements)
       break;

@@ -7,10 +7,20 @@ import { fetchData } from '../lib/fetchData';
 import React, { useState, useEffect, useRef } from 'react';
 
 
-export default function Home({data}) {
+interface Action {
+  type: string;
+  content: any;
+}
+
+interface SlideContent {
+  template_id: string;
+  [key: string]: any;
+}
+
+export default function Home() {
   return (
     <>
-      <SlideShowComponent /> 
+      <SlideShowComponent />
     </>
 
   );
@@ -21,7 +31,7 @@ export default function Home({data}) {
 const SlideShowComponent = () => {
   const [actions, setActions] = useState([]);
   const [currentActionIndex, setCurrentActionIndex] = useState(0);
-  const [slideContent, setSlideContent] = useState(null);
+  const [slideContent, setSlideContent] = useState<SlideContent | null>(null);
   const audioRef = useRef(new Audio());
 
   // Fetch actions from the backend
@@ -33,56 +43,51 @@ const SlideShowComponent = () => {
         setActions(data);
       });
   }, []);
-  
 
 
-  const [showSlide, setShowSlide] = useState(false);
-  const [visibleElements, setVisibleElements] = useState({});
-  const [slideNum, setSlideNum] = useState(0);
-  
 
-const executeAction = (action) => {
-  console.log("Executing action:", action);
-  switch(action.type) {
-    case 'show_slide':
-      setSlideContent(action.content);
-      setSlideNum(1);
-      break;
+  const [visibleElements, setVisibleElements] = useState<{[key: string]: boolean}>({});
 
-    case 'display_element':
-      const newVisibility = {};
-      console.log(action.content.ids)
-      action.content.ids.forEach(id => {
-        newVisibility[id] = true;
-      });
-      
-      setVisibleElements(newVisibility);
-      console.log("new", newVisibility)
-      console.log("visibleElements", visibleElements)
-      setSlideNum(2)
-      setVisibleElements(prev => ({ ...prev, ...newVisibility }));
-      console.log("visibleElements", visibleElements)
-      break;
-      
-    case 'play_audio':
-      if (audioRef.current) {
-        audioRef.current.src = action.content.url;
-        audioRef.current.play()
-          .catch(error => console.error('Error playing audio:', error));
-      }
-      break;
-    default:
-      // Handle unknown action
-  }
-};
+
+  const executeAction = (action: Action) => {
+    console.log("Executing action:", action);
+    switch (action.type) {
+      case 'show_slide':
+        setSlideContent(action.content);
+        break;
+
+      case 'display_element':
+        const newVisibility: { [key: string]: boolean } = {};
+        console.log(action.content.ids)
+        action.content.ids.forEach((id: string) => {
+          newVisibility[id] = true;
+        });
+
+        // console.log("new", newVisibility)
+        // console.log("visibleElements", visibleElements)
+        setVisibleElements(prev => ({ ...prev, ...newVisibility }));
+        // console.log("visibleElements", visibleElements)
+        break;
+
+      case 'play_audio':
+        if (audioRef.current) {
+          audioRef.current.src = action.content.url;
+          audioRef.current.play()
+            .catch(error => console.error('Error playing audio:', error));
+        }
+        break;
+      default:
+        console.warn('Unknown action type:', action.type);
+    }
+  };
 
 
   // Effect to run actions sequentially
   useEffect(() => {
     if (actions?.length > 0 && currentActionIndex < actions.length) {
-      const currentAction = actions[currentActionIndex];
+      const currentAction: Action = actions[currentActionIndex];
       executeAction(currentAction);
-  
+
       if (currentAction.type !== 'play_audio') {
         setTimeout(() => {
           setCurrentActionIndex(currentActionIndex + 1);
@@ -92,12 +97,12 @@ const executeAction = (action) => {
           setCurrentActionIndex(currentActionIndex + 1);
           audioRef.current.removeEventListener('ended', handleAudioEnd);
         };
-  
+
         audioRef.current.addEventListener('ended', handleAudioEnd);
       }
     }
   }, [currentActionIndex, actions]);
-  
+
 
   return (
     <>
@@ -115,7 +120,7 @@ const executeAction = (action) => {
             cardOneTitle={visibleElements.element_1 && slideContent.elements[0].title}
             cardOneText={visibleElements.element_1 && slideContent.elements[0].details}
             cardTwoTitle={visibleElements.element_2 && slideContent.elements[1].title}
-            cardTwoText={visibleElements.elements_2&& slideContent.elements[1].details}
+            cardTwoText={visibleElements.elements_2 && slideContent.elements[1].details}
             cardThreeTitle={visibleElements.element_3 && slideContent.elements[2].title}
             cardThreeText={visibleElements.elements_3 && slideContent.elements[2].details}
           />

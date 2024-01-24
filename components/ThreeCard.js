@@ -1,5 +1,5 @@
 
-export default function ThreeCard({cardTitle, cardOneTitle, cardTwoTitle, cardThreeTitle, cardOneText, cardTwoText, cardThreeText}) {
+export default function ThreeCard({cardTitle, cardOneTitle, cardOneText, cardTwoTitle, cardTwoText, cardThreeTitle, cardThreeText}) {
     return (
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">{cardTitle}</h2>

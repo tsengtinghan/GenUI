@@ -2,7 +2,7 @@
 import Image from "next/image";
 import ThreeCard from "../components/ThreeCard";
 import IntroSlide from "../components/IntroSlide";
-import Timeline from "../components/Timeline";
+import TimeLine from "../components/TimeLine";
 import { fetchData } from '../lib/fetchData';
 import React, { useState, useEffect, useRef } from 'react';
 
@@ -34,7 +34,6 @@ const SlideShowComponent = () => {
   const [slideContent, setSlideContent] = useState<SlideContent | null>(null);
   const audioRef = useRef(new Audio());
 
-  // Fetch actions from the backend
   useEffect(() => {
     fetch('/test.json')
       .then(response => response.json())
@@ -82,7 +81,6 @@ const SlideShowComponent = () => {
   };
 
 
-  // Effect to run actions sequentially
   useEffect(() => {
     if (actions?.length > 0 && currentActionIndex < actions.length) {
       const currentAction: Action = actions[currentActionIndex];
@@ -120,19 +118,19 @@ const SlideShowComponent = () => {
             cardOneTitle={visibleElements.element_1 && slideContent.elements[0].title}
             cardOneText={visibleElements.element_1 && slideContent.elements[0].details}
             cardTwoTitle={visibleElements.element_2 && slideContent.elements[1].title}
-            cardTwoText={visibleElements.elements_2 && slideContent.elements[1].details}
+            cardTwoText={visibleElements.element_2 && slideContent.elements[1].details}
             cardThreeTitle={visibleElements.element_3 && slideContent.elements[2].title}
-            cardThreeText={visibleElements.elements_3 && slideContent.elements[2].details}
+            cardThreeText={visibleElements.element_3 && slideContent.elements[2].details}
           />
         )}
-        {slideContent && slideContent.template_id === 'timeline' && visibleElements && (<Timeline
+        {slideContent && slideContent.template_id === 'timeline' && visibleElements && (<TimeLine
           title={visibleElements.title ? slideContent.title : ''}
           subtitle1={visibleElements.element_1 && slideContent.elements[0].title}
           des1={visibleElements.element_1 && slideContent.elements[0].details}
           time1={visibleElements.element_1 && slideContent.elements[0].time}
-          subtitle2={visibleElements.elements_2 && slideContent.elements[1].title}
-          des2={visibleElements.elements_2 && slideContent.elements[1].details}
-          time2={visibleElements.elements_2 && slideContent.elements[1].time}
+          subtitle2={visibleElements.element_2 && slideContent.elements[1].title}
+          des2={visibleElements.element_2 && slideContent.elements[1].details}
+          time2={visibleElements.element_2 && slideContent.elements[1].time}
           subtitle3={visibleElements.element_3 && slideContent.elements[2].title}
           des3={visibleElements.element_3 && slideContent.elements[2].details}
           time3={visibleElements.element_3 && slideContent.elements[2].time}

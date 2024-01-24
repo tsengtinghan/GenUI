@@ -55,12 +55,11 @@ const executeAction = (action) => {
       action.content.ids.forEach(id => {
         newVisibility[id] = true;
       });
-      if(slideNum === 1){
-        setVisibleElements(newVisibility);
-        console.log("new", newVisibility)
-        console.log("visibleElements", visibleElements)
-        setSlideNum(2)
-      }
+      
+      setVisibleElements(newVisibility);
+      console.log("new", newVisibility)
+      console.log("visibleElements", visibleElements)
+      setSlideNum(2)
       setVisibleElements(prev => ({ ...prev, ...newVisibility }));
       console.log("visibleElements", visibleElements)
       break;
@@ -87,7 +86,7 @@ const executeAction = (action) => {
       if (currentAction.type !== 'play_audio') {
         setTimeout(() => {
           setCurrentActionIndex(currentActionIndex + 1);
-        }, 3000); // For example, wait for 3 seconds
+        }, 1000); // For example, wait for 3 seconds
       } else {
         const handleAudioEnd = () => {
           setCurrentActionIndex(currentActionIndex + 1);
@@ -103,7 +102,7 @@ const executeAction = (action) => {
   return (
     <>
       <div>
-        {slideContent && slideContent.template_id === 'intro_slide' && visibleElements && (
+        {slideContent && slideContent.template_id === 'first_slide' && visibleElements && (
           <IntroSlide
             imageURL={visibleElements.image ? slideContent.image : null}
             title={visibleElements.title ? slideContent.title : ''}
@@ -138,9 +137,3 @@ const executeAction = (action) => {
     </>
   );
 };
-
-
-
-
-
-

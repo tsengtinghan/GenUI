@@ -7,6 +7,18 @@ import Slider from "react-slick";
 import { fetchData } from '../lib/fetchData';
 import React, { useState, useEffect, useRef } from 'react';
 
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+
+
 
 interface Action {
   type: string;
@@ -31,11 +43,11 @@ const SlideShowComponent = () => {
   const [actions, setActions] = useState([]);
   const [currentActionIndex, setCurrentActionIndex] = useState(0);
   const [slideContents, setSlideContents] = useState<SlideContent[]>([]);
-  const [visibleElements, setVisibleElements] = useState<{[key: string]: boolean}>({});
+  const [visibleElements, setVisibleElements] = useState<{ [key: string]: boolean }>({});
   const [updateCount, setUpdateCount] = useState<number>(0);
   const [slideIndex, setSlideIndex] = useState(0);
   const sliderRef = useRef<Slider>(null);
-  
+
   const audioRef = useRef(new Audio());
 
   useEffect(() => {
@@ -46,9 +58,9 @@ const SlideShowComponent = () => {
         setActions(data);
       });
   }, []);
-  
+
   useEffect(() => {
-    sliderRef.current?.slickGoTo(slideContents.length - 1);
+    sliderRef.current?.slickGoTo(slideContents.length - 1); // this has to run after slideContents is updated since all of the slides has to be rendered first before we can go to the last slide
   }, [slideContents])
 
 
@@ -57,7 +69,7 @@ const SlideShowComponent = () => {
     switch (action.type) {
       case 'show_slide':
         setSlideContents(prev => [...prev, action.content]);
-        
+
         break;
 
       case 'display_element':
@@ -92,7 +104,7 @@ const SlideShowComponent = () => {
       if (currentAction.type !== 'play_audio') {
         setTimeout(() => {
           setCurrentActionIndex(currentActionIndex + 1);
-        }, 500); // For example, wait for 3 seconds
+        }, 500); // For example, wait for 0.5 seconds
       } else {
         const handleAudioEnd = () => {
           setCurrentActionIndex(currentActionIndex + 1);
@@ -103,10 +115,12 @@ const SlideShowComponent = () => {
       }
     }
   }, [currentActionIndex, actions]);
-  
+
   const carouselItems = slideContents.map((slideContent, index) => {
     return (
-      <div key={index}>
+      <CarouselItem key={index} className="flex justify-center">
+        <div className="w-full bg-white max-w-screen-lg shadow-2xl rounded-lg aspect-[16/9] m-12 mb-16">
+
         {slideContent && slideContent.template_id === 'first_slide' && visibleElements && (
           <IntroSlide
             imageURL={visibleElements.image ? slideContent.image : null}
@@ -138,10 +152,11 @@ const SlideShowComponent = () => {
           time3={visibleElements.element_3 && slideContent.elements[2].time}
         />
         )}
-      </div>
+        </div>
+      </CarouselItem>
     );
   });
-  
+
   const settings = {
     dots: false,
     infinite: true,
@@ -152,19 +167,35 @@ const SlideShowComponent = () => {
     beforeChange: (current: number, next: number) => setSlideIndex(next)
   };
   return (
-    <div>
-      {/* <h2>Slick Go To</h2>
-      <p>Total updates: {updateCount} </p>
-      <input
-        onChange={e => sliderRef.current?.slickGoTo(parseInt(e.target.value))}
-        value={slideIndex}
-        type="range"
-        min={0}
-        max={3}
-      /> */}
-      <Slider ref={sliderRef} {...settings}>
-        {carouselItems}
-      </Slider>
+
+      <div className="mx-auto h-full flex flex-col items-center justify-center gap-4 p-2">
+      <Carousel className="w-full">
+        <CarouselContent>
+          {carouselItems}
+        </CarouselContent>
+      </Carousel>
+
+      <div className="w-full max-w-lg flex justify-between items-center relative -top-12 gap-4 bg-black rounded-3xl p-2">
+        <Label className="sr-only overflow:visible" htmlFor="input-field">
+          Input Field
+        </Label>
+        <Input
+          className="flex-grow text-white bg-black placeholder-white border-0 rounded-3xl focus:outline-none focus:ring-0"
+          id="input-field"
+          placeholder="Enter text here"
+        />
+        <Button className="bg-white text-black p-2 rounded-3xl">
+          <svg
+            className="h-6 w-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+          </svg>
+        </Button>
+      </div>
     </div>
   );
 
@@ -207,3 +238,26 @@ const SlideShowComponent = () => {
   //   </>
   // );
 };
+
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+
+function Component() {
+  return (
+    <div className="flex flex-row items-center justify-center p-6 w-full h-full">
+      <div className="flex-grow basis-1/3 bg-black h-full">
+        
+      </div>
+      <div className="flex-grow basis-2/3 bg-green-50 h-full">
+        
+      </div>
+    </div>
+  )
+}

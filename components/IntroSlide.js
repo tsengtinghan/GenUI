@@ -1,25 +1,25 @@
 
-export default function IntroSlide({imageURL, title, description}) {
+export default function IntroSlide({ imageURL, title, description }) {
   return (
-    <div className="flex flex-row items-center justify-center p-6 w-full h-full">
-      <div className="flex-grow basis-1/2 bg-black h-full flex items-center justify-center">
-      <img
-            alt="Circular Image"
-            className="inset-0 h-1/2 rounded-full object-cover shadow-lg"
-            src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg"
-            style={{
-              aspectRatio: "256/256",
-              objectFit: "cover",
-            }}
-          />
+    <div className="grid grid-cols-2 h-full">
+      <div className="bg-black h-full items-center justify-center">
+        <img
+          alt="Circular Image"
+          className="inset-0 h-1/2 rounded-full object-cover shadow-lg"
+          src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg"
+          style={{
+            aspectRatio: '256/256',
+            objectFit: 'cover',
+          }}
+        />
       </div>
-      <div className="flex-grow basis-1/2 flex-shrink-0 bg-green-50 h-full">
-        
+      <div className="bg-green-50 h-full p-12">
+        <h1 className="k">Hello world</h1>
+        <p>aaa</p>
       </div>
     </div>
-  )
+  );
 }
-
 // export default function IntroSlide({imageURL, title, description}) {
 //   return (
 //     <div className="flex items-center justify-center p-6 w-full h-full">
